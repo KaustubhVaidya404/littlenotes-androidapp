@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -48,9 +49,7 @@ public class LoginFragment extends Fragment {
                         try {
                             GoogleSignInAccount account = task.getResult();
                             if (account != null) {
-                                String name = account.getDisplayName();
-                                String email = account.getEmail();
-                                Log.i("Info","Oauth is complete with name "+name+" and email "+email);
+                                Toast.makeText(getContext(), "Welcome "+account.getDisplayName(), Toast.LENGTH_SHORT).show();
                                 saveLoginStatus();
                             }
                         } catch (Exception e) {

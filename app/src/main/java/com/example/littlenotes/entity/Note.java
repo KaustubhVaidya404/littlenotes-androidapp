@@ -9,16 +9,6 @@ public class Note {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "note_text")
-    private String noteText;
-
-    public Note() {}
-
-    public Note(int id, String noteText) {
-        this.id = id;
-        this.noteText = noteText;
-    }
-
     public int getId() {
         return id;
     }
@@ -27,11 +17,33 @@ public class Note {
         this.id = id;
     }
 
-    public String getNoteText() {
-        return noteText;
+    @ColumnInfo(name = "note_title")
+    private String noteTitle;
+
+    @ColumnInfo(name = "note_content")
+    private String noteContent;
+
+    public Note() {
     }
 
-    public void setNoteText(String noteText) {
-        this.noteText = noteText;
+    public Note(String noteTitle, String noteContent) {
+        this.noteTitle = noteTitle;
+        this.noteContent = noteContent;
+    }
+
+    public String getNoteTitle() {
+        return noteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
+    }
+
+    public String getNoteContent() {
+        return noteContent;
+    }
+
+    public void setNoteContent(String noteContent) {
+        this.noteContent = noteContent;
     }
 }

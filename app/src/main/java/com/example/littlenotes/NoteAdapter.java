@@ -36,16 +36,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return notes.size();
     }
 
+    public void setNotes(List<Note> newNotes) {
+        notes = newNotes;
+        notifyDataSetChanged();
+    }
+
     class NoteViewHolder extends RecyclerView.ViewHolder {
+        private TextView noteTitle;
         private TextView noteContent;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
+            noteTitle = itemView.findViewById(R.id.noteTitle);
             noteContent = itemView.findViewById(R.id.noteContent);
         }
 
+
         public void bind(Note note) {
-            noteContent.setText(note.getNoteText());
+            noteTitle.setText(note.getNoteTitle());
+            noteContent.setText(note.getNoteContent());
         }
     }
 }
