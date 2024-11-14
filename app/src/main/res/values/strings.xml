@@ -44,4 +44,5 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="welcome_to_little_notes">Welcome to Little Notes</string>
+    <string name="add_note">Add Note</string>
 </resources>

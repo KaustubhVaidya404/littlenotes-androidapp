@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="loginFragment" type="id" />
+    <item name="action_login_to_notes" type="id" />
+    <item name="notesFragment" type="id" />
+</resources>

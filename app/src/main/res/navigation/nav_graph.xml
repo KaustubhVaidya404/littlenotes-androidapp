@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/loginFragment">
 
+    <!-- LoginFragment -->
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.littlenotes.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/loginFragment"
+        android:name="com.example.littlenotes.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_login_to_notes"
+            app:destination="@id/notesFragment" />
     </fragment>
+
+    <!-- NotesFragment -->
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.littlenotes.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/notesFragment"
+        android:name="com.example.littlenotes.NotesFragment"
+        android:label="Notes"
+        tools:layout="@layout/fragment_notes" />
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+
+
 </navigation>
