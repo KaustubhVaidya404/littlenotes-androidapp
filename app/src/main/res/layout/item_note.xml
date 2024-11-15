@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/noteTitle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="@string/note_title"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -26,26 +26,18 @@
         android:id="@+id/noteContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/note_content_goes_here"
-        android:textSize="14sp"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/noteTitle"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constrainedHeight="true"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
-        android:maxLines="3" />
+        android:maxLines="3"
+        android:text="@string/note_content_goes_here"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/noteTitle" />
 
-<!--    &lt;!&ndash; Optional: Timestamp of the note &ndash;&gt;-->
-<!--    <TextView-->
-<!--        android:id="@+id/noteTimestamp"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="12:00 PM, Jan 1"-->
-<!--        android:textSize="12sp"-->
-<!--        android:textColor="@android:color/darker_gray"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/noteContent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

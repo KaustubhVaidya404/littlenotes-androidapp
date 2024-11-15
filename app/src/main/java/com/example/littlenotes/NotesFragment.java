@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,11 +41,11 @@ public class NotesFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         noteAdapter = new NoteAdapter(new ArrayList<>());
-        recyclerView.setAdapter(noteAdapter);
+
 
         List<Note> notes = noteDatabase.noteDao().getNotes();
         noteAdapter.setNotes(notes);
-
+        recyclerView.setAdapter(noteAdapter);
         fabAddNote.setOnClickListener(v -> openAddNoteDialog());
 
         return view;
@@ -64,6 +65,7 @@ public class NotesFragment extends Fragment {
         EditText etNoteContent = dialogView.findViewById(R.id.etNoteContent);
         Button btnSaveNote = dialogView.findViewById(R.id.btnSaveNote);
         Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
+        ProgressBar progressBar = dialogView.findViewById(R.id.progressBar);
 
 
         AlertDialog dialog = builder.create();
@@ -76,19 +78,22 @@ public class NotesFragment extends Fragment {
 
             if (!noteContent.isEmpty()) {
 
-                Note newNote = new Note();
-//                newNote.setNoteText(noteTitle + "\n" + noteContent);
-                newNote.setNoteTitle(noteTitle);
-                newNote.setNoteContent(noteContent);
-                noteDatabase.noteDao().insert(newNote);
+                progressBar.setVisibility(View.VISIBLE);
+
+                new Thread(() -> {
+                    Note newNote = new Note();
+                    newNote.setNoteTitle(noteTitle);
+                    newNote.setNoteContent(noteContent);
+                    noteDatabase.noteDao().insert(newNote);
 
 
-                noteAdapter = new NoteAdapter(noteDatabase.noteDao().getNotes());
-                recyclerView.setAdapter(noteAdapter);
-
-
-                dialog.dismiss();
-                Toast.makeText(getActivity(), "Note saved", Toast.LENGTH_SHORT).show();
+                    getActivity().runOnUiThread(() -> {
+                        noteAdapter.setNotes(noteDatabase.noteDao().getNotes());
+                        progressBar.setVisibility(View.GONE);
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "Note saved", Toast.LENGTH_SHORT).show();
+                    });
+                }).start();
             } else {
                 Toast.makeText(getActivity(), "Please enter content", Toast.LENGTH_SHORT).show();
             }
