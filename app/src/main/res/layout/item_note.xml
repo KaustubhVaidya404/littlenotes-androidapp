@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <!-- Title of the note -->
     <TextView
         android:id="@+id/noteTitle"
         android:layout_width="0dp"
@@ -21,15 +20,11 @@
         android:ellipsize="end"
         android:maxLines="1"/>
 
-    <!-- Content of the note -->
     <TextView
         android:id="@+id/noteContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constrainedHeight="true"
         android:layout_marginTop="8dp"
-        android:ellipsize="end"
-        android:maxLines="3"
         android:text="@string/note_content_goes_here"
         android:textColor="@android:color/darker_gray"
         android:textSize="14sp"
@@ -38,6 +33,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/noteTitle" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
