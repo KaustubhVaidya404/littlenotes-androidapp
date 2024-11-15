@@ -1,30 +1,39 @@
 package com.example.littlenotes;
 
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.littlenotes.db.NoteDatabase;
 import com.example.littlenotes.entity.Note;
 
 import java.util.List;
+
+import android.os.Handler;
+import android.os.Looper;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private List<Note> notes;
     private OnNoteLongClickListener longClickListener;
 
+    private NoteDatabase noteDatabase;
+
+
+    public NoteAdapter(OnNoteLongClickListener longClickListener, NoteDatabase noteDatabase) {
+        this.notes = noteDatabase.noteDao().getNotes();
+        this.longClickListener = longClickListener;
+        this.noteDatabase = noteDatabase;
+    }
+
     public interface OnNoteLongClickListener {
         void onNoteLongClick(int position);
     }
-
-    public NoteAdapter(List<Note> notes, OnNoteLongClickListener longClickListener) {
-        this.notes = notes;
-        this.longClickListener = longClickListener;
-    }
-
 
     @NonNull
     @Override
@@ -46,6 +55,10 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             }
             return true;
         });
+
+        holder.deleteButton.setOnClickListener(v -> {
+            deleteNote(position);
+        });
     }
 
 
@@ -63,13 +76,28 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return notes;
     }
 
+    private void deleteNote(int position) {
+        Note note = notes.get(position);
+        new Thread(() -> {
+            noteDatabase.noteDao().delete(note);
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(() -> {
+                notes.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeRemoved(position, notes.size());
+            });
+        }).start();
+    }
+
     class NoteViewHolder extends RecyclerView.ViewHolder {
         private TextView noteTitle, noteContent;
+        private ImageButton deleteButton;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.noteTitle);
             noteContent = itemView.findViewById(R.id.noteContent);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
         }
 
     }
