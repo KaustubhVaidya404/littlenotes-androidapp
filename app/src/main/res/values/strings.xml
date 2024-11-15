@@ -52,4 +52,5 @@
     <string name="note_title">Note Title</string>
     <string name="note_content_goes_here">Note content goes here...</string>
     <string name="delete_button">Delete Button</string>
+    <string name="app_toolbar">App Toolbar</string>
 </resources>

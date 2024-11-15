@@ -17,6 +17,7 @@ import java.util.List;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private List<Note> notes;
@@ -58,6 +59,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
         holder.deleteButton.setOnClickListener(v -> {
             deleteNote(position);
+            Toast.makeText(v.getContext(), "Note Deleted", Toast.LENGTH_SHORT).show();
         });
     }
 

@@ -4,16 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="#F7F7F7">
 
+    <!-- Note Title EditText -->
     <EditText
         android:id="@+id/etNoteTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title"
         android:inputType="text"
-        android:autofillHints="@string/title" />
+        android:autofillHints="@string/title"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:background="@drawable/edit_text_bg"
+        android:layout_marginBottom="16dp"/>
 
+    <!-- Note Content EditText -->
     <EditText
         android:id="@+id/etNoteContent"
         android:layout_width="match_parent"
@@ -22,24 +30,41 @@
         android:inputType="textMultiLine"
         android:minLines="3"
         android:maxLines="5"
-        android:autofillHints="@string/content" />
+        android:autofillHints="@string/content"
+        android:padding="12dp"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:background="@drawable/edit_text_bg"
+        android:layout_marginBottom="24dp"/>
 
+    <!-- Save Button -->
     <Button
         android:id="@+id/btnSaveNote"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save" />
+        android:text="@string/save"
+        android:textColor="#FFFFFF"
+        android:background="#3F51B5"
+        android:layout_marginBottom="12dp"
+        android:textSize="16sp"/>
 
+    <!-- Cancel Button -->
     <Button
         android:id="@+id/buttonCancel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:textColor="#333333"
+        android:background="#FF4081"
+        android:textSize="16sp"/>
 
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:layout_marginTop="24dp" />
 
 </LinearLayout>
+
