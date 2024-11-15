@@ -21,7 +21,6 @@ import com.example.littlenotes.db.NoteDatabase;
 import com.example.littlenotes.entity.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NotesFragment extends Fragment implements NoteAdapter.OnNoteLongClickListener{
@@ -40,7 +39,7 @@ public class NotesFragment extends Fragment implements NoteAdapter.OnNoteLongCli
         noteDatabase = Room.databaseBuilder(getActivity(), NoteDatabase.class, "note_db").allowMainThreadQueries().build();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        noteAdapter = new NoteAdapter(noteDatabase.noteDao().getNotes(), (NoteAdapter.OnNoteLongClickListener) this);
+        noteAdapter = new NoteAdapter((NoteAdapter.OnNoteLongClickListener) this, noteDatabase);
 
 
         List<Note> notes = noteDatabase.noteDao().getNotes();
@@ -82,14 +81,12 @@ public class NotesFragment extends Fragment implements NoteAdapter.OnNoteLongCli
             if (!updatedContent.isEmpty()) {
                 progressBar.setVisibility(View.VISIBLE);
 
-                // Update the note in the database
                 new Thread(() -> {
                     note.setNoteTitle(updatedTitle);
                     note.setNoteContent(updatedContent);
                     noteDatabase.noteDao().update(note);
 
                     getActivity().runOnUiThread(() -> {
-                        // Refresh RecyclerView with updated data
                         noteAdapter.setNotes(noteDatabase.noteDao().getNotes());
                         progressBar.setVisibility(View.GONE);
                         dialog.dismiss();
