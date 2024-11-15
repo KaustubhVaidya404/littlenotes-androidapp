@@ -14,10 +14,17 @@ import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder> {
     private List<Note> notes;
+    private OnNoteLongClickListener longClickListener;
 
-    public NoteAdapter(List<Note> notes) {
-        this.notes = notes;
+    public interface OnNoteLongClickListener {
+        void onNoteLongClick(int position);
     }
+
+    public NoteAdapter(List<Note> notes, OnNoteLongClickListener longClickListener) {
+        this.notes = notes;
+        this.longClickListener = longClickListener;
+    }
+
 
     @NonNull
     @Override
@@ -28,8 +35,19 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull NoteViewHolder holder, int position) {
-        holder.bind(notes.get(position));
+        Note note = notes.get(position);
+        holder.noteTitle.setText(note.getNoteTitle());
+        holder.noteContent.setText(note.getNoteContent());
+
+        // Set up long click listener
+        holder.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onNoteLongClick(position);
+            }
+            return true;
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -37,13 +55,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
     }
 
     public void setNotes(List<Note> newNotes) {
-        notes = newNotes;
+        this.notes = newNotes;
         notifyDataSetChanged();
     }
 
+    public List<Note> getNotes() {
+        return notes;
+    }
+
     class NoteViewHolder extends RecyclerView.ViewHolder {
-        private TextView noteTitle;
-        private TextView noteContent;
+        private TextView noteTitle, noteContent;
 
         public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -51,11 +72,6 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
             noteContent = itemView.findViewById(R.id.noteContent);
         }
 
-
-        public void bind(Note note) {
-            noteTitle.setText(note.getNoteTitle());
-            noteContent.setText(note.getNoteContent());
-        }
     }
 }
 
