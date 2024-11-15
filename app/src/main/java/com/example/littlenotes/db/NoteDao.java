@@ -3,6 +3,7 @@ package com.example.littlenotes.db;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.littlenotes.entity.Note;
 
@@ -15,4 +16,8 @@ public interface NoteDao {
 
     @Insert
     void insert(Note note);
+
+    @Update
+    void update(Note note);
+
 }

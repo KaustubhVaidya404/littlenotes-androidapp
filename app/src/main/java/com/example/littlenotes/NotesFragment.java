@@ -24,7 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements NoteAdapter.OnNoteLongClickListener{
     private RecyclerView recyclerView;
     private FloatingActionButton fabAddNote;
     private NoteAdapter noteAdapter;
@@ -40,7 +40,7 @@ public class NotesFragment extends Fragment {
         noteDatabase = Room.databaseBuilder(getActivity(), NoteDatabase.class, "note_db").allowMainThreadQueries().build();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        noteAdapter = new NoteAdapter(new ArrayList<>());
+        noteAdapter = new NoteAdapter(noteDatabase.noteDao().getNotes(), (NoteAdapter.OnNoteLongClickListener) this);
 
 
         List<Note> notes = noteDatabase.noteDao().getNotes();
@@ -51,7 +51,58 @@ public class NotesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onNoteLongClick(int position) {
+        Note note = noteAdapter.getNotes().get(position);
+        openEditNoteDialog(note);
+    }
 
+    private void openEditNoteDialog(Note note) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_add_note, null);
+        builder.setView(dialogView);
+
+        EditText etNoteTitle = dialogView.findViewById(R.id.etNoteTitle);
+        EditText etNoteContent = dialogView.findViewById(R.id.etNoteContent);
+        Button btnSaveNote = dialogView.findViewById(R.id.btnSaveNote);
+        Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
+        ProgressBar progressBar = dialogView.findViewById(R.id.progressBar);
+
+        etNoteTitle.setText(note.getNoteTitle());
+        etNoteContent.setText(note.getNoteContent());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        btnSaveNote.setOnClickListener(v -> {
+            String updatedTitle = etNoteTitle.getText().toString().trim();
+            String updatedContent = etNoteContent.getText().toString().trim();
+
+            if (!updatedContent.isEmpty()) {
+                progressBar.setVisibility(View.VISIBLE);
+
+                // Update the note in the database
+                new Thread(() -> {
+                    note.setNoteTitle(updatedTitle);
+                    note.setNoteContent(updatedContent);
+                    noteDatabase.noteDao().update(note);
+
+                    getActivity().runOnUiThread(() -> {
+                        // Refresh RecyclerView with updated data
+                        noteAdapter.setNotes(noteDatabase.noteDao().getNotes());
+                        progressBar.setVisibility(View.GONE);
+                        dialog.dismiss();
+                        Toast.makeText(getActivity(), "Note updated", Toast.LENGTH_SHORT).show();
+                    });
+                }).start();
+            } else {
+                Toast.makeText(getActivity(), "Please enter content", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+    }
 
     private void openAddNoteDialog() {
 
