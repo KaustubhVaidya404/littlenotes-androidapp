@@ -39,6 +39,7 @@ dependencies {
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
     implementation libs.recyclerview
+    implementation libs.picasso
     implementation libs.play.services.auth
     implementation libs.room.runtime
     annotationProcessor libs.room.compiler

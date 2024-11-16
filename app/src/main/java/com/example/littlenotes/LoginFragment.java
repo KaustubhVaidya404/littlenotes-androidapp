@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment {
                             GoogleSignInAccount account = task.getResult();
                             if (account != null) {
                                 Toast.makeText(getContext(), "Welcome "+account.getDisplayName(), Toast.LENGTH_SHORT).show();
-                                saveLoginStatus();
+                                saveLoginStatus(account);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -59,11 +59,12 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void saveLoginStatus() {
+    private void saveLoginStatus(GoogleSignInAccount account) {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-
         editor.putBoolean("isLoggedIn", true);
+        String url = account.getPhotoUrl().toString();
+        editor.putString("ProfilePhotoURL", url);
 
         editor.apply();
 
@@ -93,4 +94,5 @@ public class LoginFragment extends Fragment {
 
         return view;
     }
+
 }
